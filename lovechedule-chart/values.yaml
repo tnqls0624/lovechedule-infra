@@ -72,11 +72,11 @@ services:
 
 ingress:
   enabled: true
-  className: "alb"  # or alb or any other appropriate class
+  className: "nginx"  # or alb or any other appropriate class
   hosts:
     - host: api.lovechedule.com
       paths:
-        - path: /
+        - path: /*
           pathType: ImplementationSpecific
   tls:
     - hosts:
