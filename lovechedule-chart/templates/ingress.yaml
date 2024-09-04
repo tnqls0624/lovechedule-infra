@@ -7,7 +7,8 @@ metadata:
   labels:
     app: lovechedule-alb-ingress-public
     group: lovechedule
-{{/*  annotations:*/}}
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 {{/*    alb.ingress.kubernetes.io/scheme: internet-facing*/}}
 {{/*    alb.ingress.kubernetes.io/target-type: instance*/}}
 {{/*    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'*/}}
@@ -22,7 +23,7 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ .path }}
-            pathType: {{ .pathType | default "ImplementationSpecific" }}
+            pathType: Prefix
             backend:
               service:
                 name: app
