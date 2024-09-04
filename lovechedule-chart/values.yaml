@@ -66,7 +66,7 @@ services:
       app: "app"
       group: "lovechedule"
     ports:
-      port: 3000
+      port: 80
       targetPort: 80
       nodePort: 32080
 
