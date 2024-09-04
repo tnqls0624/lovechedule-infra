@@ -19,7 +19,7 @@ deployments:
       tag: 0.0.2
       ports:
         name: http-internal
-        port: 80
+        port: 3000
     env:
       - name: MONGO_URL
         value: "mongodb://lovechedule:soobeen0624@mongodb.lovechedule.svc.cluster.local:27017/lovechedule?authSource=admin&readPreference=primary"
@@ -66,8 +66,8 @@ services:
       app: "app"
       group: "lovechedule"
     ports:
-      port: 80
-      targetPort: 80
+      port: 3000
+      targetPort: 3000
       nodePort: 32080
 
 ingress:
