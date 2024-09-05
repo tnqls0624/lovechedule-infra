@@ -9,7 +9,7 @@ spec:
       type: string
     - name: image-reference
       type: string
-    - name: kubectl-args   
+    - name: kubectl-args
       type: array
       default: [ ]
 
