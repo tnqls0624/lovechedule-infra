@@ -16,9 +16,10 @@ spec:
         spec:
           accessModes:
             - ReadWriteOnce
+          storageClassName: ""
           resources:
             requests:
-              storage: 1Ei
+              storage: 1Gi
     - name: docker-credentials
       secret:
         secretName: docker-credentials
