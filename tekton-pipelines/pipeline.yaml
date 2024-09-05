@@ -9,6 +9,9 @@ spec:
       type: string
     - name: image-reference
       type: string
+    - name: kubectl-args   
+      type: array
+      default: [ ]
 
   workspaces:
     - name: shared-data
