@@ -24,9 +24,9 @@ spec:
         secretName: docker-credentials
   params: # git address
     - name: repo-url
-      value: {깃허브 주소}
+      value: "https://github.com/tnqls0624/lovechedule-infra.git"
     - name: image-reference
-      value: {도커 이미지 이름 : 태그}
+      value: "dktnqls0624:latest"
     - name: kubectl-args
       value:
         - "apply"
