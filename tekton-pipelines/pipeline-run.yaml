@@ -1,0 +1,34 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: clone-read-run-1 # make name automate with random index ( for re use pipelinerun yaml )
+  namespace: lovechedule
+spec:
+  serviceAccountName: lovechedule-pipeline-sa # sa for git credientials -> pipeline will use for clone private repo
+  pipelineRef: # select pipeline
+    name: clone-read
+  podTemplate: # setting taskpod
+    securityContext:  # pod security
+      fsGroup: 65532 # set volume owner gid = 65532
+  workspaces: # volume for clone code
+    - name: shared-data
+      volumeClaimTemplate: # automatically create pvc -> create pv
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+    - name: docker-credentials
+      secret:
+        secretName: docker-credentials
+  params: # git address
+    - name: repo-url
+      value: {깃허브 주소}
+    - name: image-reference
+      value: {도커 이미지 이름 : 태그}
+    - name: kubectl-args
+      value:
+        - "apply"
+        - "-f"
+        - "test.yaml"
