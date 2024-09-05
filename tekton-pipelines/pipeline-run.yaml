@@ -14,6 +14,7 @@ spec:
     - name: shared-data
       volumeClaimTemplate: # automatically create pvc -> create pv
         spec:
+          storageClassName: gp2
           accessModes:
             - ReadWriteOnce
           resources:
