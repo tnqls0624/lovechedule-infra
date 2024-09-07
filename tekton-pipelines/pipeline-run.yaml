@@ -12,7 +12,6 @@ spec:
       fsGroup: 65532 # set volume owner gid = 65532
   workspaces: # volume for clone code
     - name: shared-data
-      storageClassName: ''
       volumeClaimTemplate: # automatically create pvc -> create pv
         spec:
           accessModes:
@@ -22,7 +21,7 @@ spec:
               storage: 1Gi
     - name: docker-credentials
       secret:
-        secretName: docker-credentials
+        secretName: regcred
   params: # git address
     - name: repo-url
       value: "https://github.com/tnqls0624/lovechedule-infra.git"
