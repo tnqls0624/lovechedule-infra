@@ -3,9 +3,10 @@ kind: StorageClass
 metadata:
   name: shared-data
   namespace: lovechedule
-provisioner: ebs.csi.aws.com
+provisioner: kubernetes.io/aws-ebs
 volumeBindingMode: WaitForFirstConsumer
 parameters:
-  csi.storage.k8s.io/fstype: xfs
   type: gp2  # 또는 다른 EBS 유형
-  encrypted: "false"
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+
