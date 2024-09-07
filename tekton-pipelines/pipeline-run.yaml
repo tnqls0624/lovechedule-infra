@@ -10,8 +10,15 @@ spec:
   podTemplate: # setting taskpod
     securityContext:  # pod security
       fsGroup: 65532 # set volume owner gid = 65532
+    volume:
+      name: shared-data-volume
+      hostPath:
+        path: /mnt/data/shared  # 원하는 로컬 경로 설정
+        type: DirectoryOrCreate
   workspaces: # volume for clone code
     - name: shared-data
+      volume:
+        name: shared-data-volume
 #      volumeClaimTemplate: # automatically create pvc -> create pv
 #        spec:
 #          accessModes:
@@ -19,11 +26,7 @@ spec:
 #          resources:
 #            requests:
 #              storage: 1Gi
-      volume:
-        name: shared-data-volume
-        hostPath:
-          path: /mnt/data/shared  # 원하는 로컬 경로 설정
-          type: DirectoryOrCreate
+
     - name: docker-credentials
       secret:
         secretName: docker-credentials
