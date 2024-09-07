@@ -7,4 +7,4 @@ volumeBindingMode: WaitForFirstConsumer
 parameters:
   csi.storage.k8s.io/fstype: xfs
   type: gp2  # 또는 다른 EBS 유형
-  encrypted: "true"
+  encrypted: "false"
