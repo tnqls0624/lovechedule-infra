@@ -18,7 +18,6 @@ spec:
         spec:
           accessModes:
             - ReadWriteOnce
-          storageClassName: shared-data
           resources:
             requests:
               storage: 1Gi
