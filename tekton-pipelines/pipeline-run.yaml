@@ -16,6 +16,7 @@ spec:
         spec:
           accessModes:
             - ReadWriteOnce
+          storageClassName: shared-data
           resources:
             requests:
               storage: 1Gi
@@ -24,7 +25,7 @@ spec:
         secretName: docker-credentials
   params: # git address
     - name: repo-url
-      value: "https://github.com/tnqls0624/lovechedule.git"
+      value: "https://github.com/tnqls0624/lovechedule-infra.git"
     - name: image-reference
       value: "dktnqls0624/project:latest"
     - name: kubectl-args
