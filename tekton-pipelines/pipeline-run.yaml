@@ -12,8 +12,7 @@ spec:
       fsGroup: 65532 # set volume owner gid = 65532
   workspaces: # volume for clone code
     - name: shared-data
-#      persistentVolumeClaim:
-#        claimName: lovechedule-pvc
+      storageClassName: ''
       volumeClaimTemplate: # automatically create pvc -> create pv
         spec:
           accessModes:
