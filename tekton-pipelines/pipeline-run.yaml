@@ -19,7 +19,6 @@ spec:
           resources:
             requests:
               storage: 1Gi
-          storageClassName: "shared-data"
     - name: docker-credentials
       secret:
         secretName: docker-credentials
