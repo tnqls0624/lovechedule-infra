@@ -12,14 +12,16 @@ spec:
       fsGroup: 65532 # set volume owner gid = 65532
   workspaces: # volume for clone code
     - name: shared-data
-      volumeClaimTemplate: # automatically create pvc -> create pv
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          storageClassName: shared-data
-          resources:
-            requests:
-              storage: 1Gi
+      persistentVolumeClaim:
+        claimName: lovechedule-pvc
+#      volumeClaimTemplate: # automatically create pvc -> create pv
+#        spec:
+#          accessModes:
+#            - ReadWriteOnce
+#          storageClassName: shared-data
+#          resources:
+#            requests:
+#              storage: 1Gi
     - name: docker-credentials
       secret:
         secretName: docker-credentials
