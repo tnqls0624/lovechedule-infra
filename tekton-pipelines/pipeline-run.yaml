@@ -8,10 +8,8 @@ spec:
   pipelineRef: # select pipeline
     name: clone-read
   podTemplate: # setting taskpod
-    securityContext:
-      runAsUser: 1000   # 권한이 필요한 사용자 ID
-      runAsGroup: 1000  # 그룹 ID
-      fsGroup: 1000     # 볼륨의 그룹 소유자 ID 설정
+    securityContext:  # pod security
+      fsGroup: 65532 # set volume owner gid = 65532
   workspaces: # volume for clone code
     - name: shared-data
       persistentVolumeClaim:
