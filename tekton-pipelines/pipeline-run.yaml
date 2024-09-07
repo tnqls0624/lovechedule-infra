@@ -19,8 +19,6 @@ spec:
           resources:
             requests:
               storage: 1Gi
-          hostPath:
-            path: /mnt/data/
     - name: docker-credentials
       secret:
         secretName: docker-credentials
