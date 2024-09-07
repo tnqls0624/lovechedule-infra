@@ -19,6 +19,7 @@ spec:
           resources:
             requests:
               storage: 1Gi
+            path: /mnt/data/share
     - name: docker-credentials
       secret:
         secretName: docker-credentials
