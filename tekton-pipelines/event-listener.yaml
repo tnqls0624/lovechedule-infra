@@ -1,0 +1,16 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: lovechedule-eventlistner
+  namespace: lovechedule
+spec:
+  resources:
+    kubernetesResource:
+      serviceType: NodePort
+  serviceAccountName: trigger-sa
+  triggers:
+    - name: lovechedule-trigger
+      bindings:
+       - ref: lovechedule-tb
+      template:
+         ref: lovechedule-tt

@@ -12,24 +12,18 @@ spec:
       fsGroup: 65532 # set volume owner gid = 65532
   workspaces: # volume for clone code
     - name: shared-data
-      storageClassName: ''
-      volumeClaimTemplate: # automatically create pvc -> create pv
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 1Gi
+      persistentVolumeClaim:
+        claimName: lovechedule-pvc2
     - name: docker-credentials
       secret:
-        secretName: docker-credentials
+        secretName: regcred
   params: # git address
     - name: repo-url
-      value: "https://github.com/tnqls0624/lovechedule-infra.git"
+      value: "https://github.com/tnqls0624/lovechedule.git"
     - name: image-reference
       value: "dktnqls0624/project:latest"
-    - name: kubectl-args
-      value:
-        - "apply"
-        - "-f"
-        - "test.yaml"
+        #- name: kubectl-args
+        #value:
+        #- "apply"
+        #- "-f"
+        #- "test.yaml"

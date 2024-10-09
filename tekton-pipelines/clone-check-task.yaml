@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: git-clone-and-check
+spec:
+  workspaces:
+    - name: source
+  steps:
+    - name: fetch-source
+      image: alpine/git:latest
+      script: |
+        set -e
+        git clone $(params.repo-url) $(workspaces.source.path)
+    - name: check-dockerfile
+      image: alpine:latest
+      script: |
+        set -e
+        echo "Checking for Dockerfile in workspace..."
+        ls -R $(workspaces.source.path) # 모든 파일 나열
+        if [ -f "$(workspaces.source.path)/Dockerfile" ]; then
+          echo "Dockerfile found at $(workspaces.source.path)/Dockerfile"
+        else
+          echo "Dockerfile not found in expected location."
+          exit 1
+        fi
+
