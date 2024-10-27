@@ -24,6 +24,9 @@ spec:
   workspaces:
     - name: source
       description: "Workspace containing the source code"
+    - name: basic-auth
+      description: "Workspace containing .git-credentials and .gitconfig for HTTPS authentication"
+      optional: true
 
   steps:
     - name: update-manifest
@@ -32,6 +35,12 @@ spec:
         #!/bin/sh
         set -e
         set -x
+
+        # Configure HTTPS authentication if available
+        if [ -d /workspace/basic-auth ]; then
+          cp /workspace/basic-auth/.git-credentials /root/.git-credentials
+          cp /workspace/basic-auth/.gitconfig /root/.gitconfig
+        fi
 
         # Clone the repository
         git clone $(params.gitRepoUrl) $(workspaces.source.path)/repo
@@ -49,3 +58,7 @@ spec:
         git add $(params.chartDirectory)/$(params.chartValuesFile)
         git commit -m "Update image tag to $(params.imageTag)"
         git push origin $(params.gitRevision)
+
+  results:
+    - name: commit-sha
+      description: "The SHA of the commit that was created"
