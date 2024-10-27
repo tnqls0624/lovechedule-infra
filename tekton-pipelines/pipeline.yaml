@@ -36,27 +36,6 @@ spec:
         - name: url
           value: $(params.repo-url)
 
-    - name: check-dockerfile
-      runAfter: ["fetch-source"]
-      taskSpec:
-        workspaces:
-          - name: source
-        steps:
-          - name: list-files
-            image: alpine:latest
-            script: |
-              echo "Listing files in workspace..."
-              ls -R $(workspaces.source.path) # 모든 파일 나열
-              if [ -f "$(workspaces.source.path)/Dockerfile" ]; then
-                echo "Dockerfile found at $(workspaces.source.path)/Dockerfile"
-              else
-                echo "Dockerfile not found in expected location."
-                exit 1
-              fi
-      workspaces:
-        - name: source
-          workspace: shared-data
-
     - name: build-push
       runAfter: ["check-dockerfile"]
       taskRef:

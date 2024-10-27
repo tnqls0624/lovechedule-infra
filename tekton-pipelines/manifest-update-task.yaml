@@ -54,7 +54,9 @@ spec:
         git checkout $(params.gitRevision)
 
         # Update image tag in the Helm values file
-        sed -i "s|tag: .*|tag: \"$(params.imageTag)\"|" $(params.chartDirectory)/$(params.chartValuesFile)
+        sed -i "s|\(tag:\s*\).*|\1\"$(params.imageTag)\"|" $(params.chartDirectory)/$(params.chartValuesFile)
+
+
 
         # Commit the change
         git config user.name "tnqls0624"
