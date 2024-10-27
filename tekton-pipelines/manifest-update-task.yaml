@@ -1,0 +1,50 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: update-manifest-commit
+  namespace: lovechedule
+spec:
+  params:
+    - name: gitRepoUrl
+      description: "Git repository URL for the Helm manifest"
+      type: string
+    - name: gitRevision
+      description: "Git branch or tag to commit (e.g. main)"
+      type: string
+    - name: chartDirectory
+      description: "Directory of the Helm chart in the repository"
+      type: string
+    - name: chartValuesFile
+      description: "Values file in the Helm chart to update with the new image tag"
+      type: string
+    - name: imageTag
+      description: "New image tag to update in the Helm manifest"
+      type: string
+
+  workspaces:
+    - name: source
+      description: "Workspace containing the source code"
+
+  steps:
+    - name: update-manifest
+      image: alpine/git:latest
+      script: |
+        #!/bin/sh
+        set -e
+
+        # Clone the repository
+        git clone $(params.gitRepoUrl) repo
+        cd repo
+
+        # Checkout the target branch
+        git checkout $(params.gitRevision)
+
+        # Update image tag in the Helm values file
+        sed -i "s|tag: .*|tag: \"$(params.imageTag)\"|" $(params.chartDirectory)/$(params.chartValuesFile)
+
+        # Commit the change
+        git config user.name "tnqls0624"
+        git config user.email "dktnqls0624@naver.com"
+        git add $(params.chartDirectory)/$(params.chartValuesFile)
+        git commit -m "Update image tag to $(params.imageTag)"
+        git push origin $(params.gitRevision)
