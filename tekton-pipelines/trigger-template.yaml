@@ -1,0 +1,39 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: lovechedule-tt
+  namespace: lovechedule
+spec:
+  params:
+    - name: giturl # git repo url
+    - name: imagetag # image tag in commit message
+  resourcetemplates: # automate create pipelinerun
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        namespace: lovechedule
+        generateName: lovechedule-cicd-run-
+      spec:
+        serviceAccountName: lovechedule-pipeline-sa # sa for git & docker credientials -> pipeline will use for clone private repo
+        pipelineRef: # select pipeline
+          name: clone-read
+        podTemplate: # setting taskpod
+          securityContext:  # pod security
+            fsGroup: 65532 # set volume owner gid = 65532
+        workspaces: # volume for clone code
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: lovechedule-pvc2
+        - name: docker-credentials
+          secret:
+            secretName: regcred
+        params: # git address
+        - name: repo-url
+          value: $(tt.params.giturl)
+        - name: image-reference
+          value: dktnqls0624/project:$(tt.params.imagetag)
+            #- name: kubectl-args
+            #value:
+            #- "apply"
+            #- "-f"
+            #- "test.yaml"

@@ -27,8 +27,34 @@ spec:
         - name: url
           value: $(params.repo-url)
 
+<<<<<<< HEAD
     - name: build-push
       runAfter: ["fetch-source"]
+=======
+    - name: check-dockerfile
+      runAfter: ["fetch-source"]
+      taskSpec:
+        workspaces:
+          - name: source
+        steps:
+          - name: list-files
+            image: alpine:latest
+            script: |
+              echo "Listing files in workspace..."
+              ls -R $(workspaces.source.path) # 모든 파일 나열
+              if [ -f "$(workspaces.source.path)/Dockerfile" ]; then
+                echo "Dockerfile found at $(workspaces.source.path)/Dockerfile"
+              else
+                echo "Dockerfile not found in expected location."
+                exit 1
+              fi
+      workspaces:
+        - name: source
+          workspace: shared-data
+
+    - name: build-push
+      runAfter: ["check-dockerfile"]
+>>>>>>> origin/main
       taskRef:
         name: kaniko
       workspaces:
@@ -39,6 +65,7 @@ spec:
       params:
         - name: IMAGE
           value: $(params.image-reference)
+<<<<<<< HEAD
 
     - name: deploy
       runAfter: ["build-push"]
@@ -50,3 +77,21 @@ spec:
       params:
         - name: args
           value: $(params.kubectl-args[*])
+=======
+        - name: DOCKERFILE
+          value: Dockerfile # Dockerfile의 위치를 명확히 지정
+        - name: CONTEXT
+          value: . # 빌드 컨텍스트 경로
+
+            #   - name: deploy
+            #runAfter: ["build-push"]
+            #taskRef:
+            #name: kubernetes-actions
+            # workspaces:
+            # - name: manifest-dir
+            #workspace: shared-data
+            #params:
+            #- name: args
+            #value: $(params.kubectl-args[*])
+
+>>>>>>> origin/main
