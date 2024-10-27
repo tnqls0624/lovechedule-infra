@@ -31,10 +31,11 @@ spec:
       script: |
         #!/bin/sh
         set -e
+        set -x
 
         # Clone the repository
-        git clone $(params.gitRepoUrl) repo
-        cd repo
+        git clone $(params.gitRepoUrl) $(workspaces.source.path)/repo
+        cd $(workspaces.source.path)/repo
 
         # Checkout the target branch
         git checkout $(params.gitRevision)
