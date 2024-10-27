@@ -20,6 +20,10 @@ spec:
     - name: imageTag
       description: "New image tag to update in the Helm manifest"
       type: string
+    - name: gitTag
+      description: "Git tag to create (optional)"
+      type: string
+      default: ""
 
   workspaces:
     - name: source
@@ -57,6 +61,14 @@ spec:
         git config user.email "dktnqls0624@naver.com"
         git add $(params.chartDirectory)/$(params.chartValuesFile)
         git commit -m "Update image tag to $(params.imageTag)"
+
+        # Create a Git tag if a tag is provided
+        if [ -n "$(params.gitTag)" ]; then
+          git tag $(params.gitTag)
+          git push origin $(params.gitTag)
+        fi
+
+        # Push the commit
         git push origin $(params.gitRevision)
 
   results:
