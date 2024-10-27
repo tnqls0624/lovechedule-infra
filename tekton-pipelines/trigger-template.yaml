@@ -7,6 +7,10 @@ spec:
   params:
     - name: giturl # git repo url
     - name: imagetag # image tag in commit message
+    - name: gitRepoUrl # Helm manifest repository URL
+    - name: gitRevision # Git branch for committing changes
+    - name: chartDirectory # Directory of the Helm chart in the repository
+    - name: chartValuesFile # Values file to update with the new image tag
   resourcetemplates: # automate create pipelinerun
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
@@ -21,19 +25,22 @@ spec:
           securityContext:  # pod security
             fsGroup: 65532 # set volume owner gid = 65532
         workspaces: # volume for clone code
-        - name: shared-data
-          persistentVolumeClaim:
-            claimName: lovechedule-pvc2
-        - name: docker-credentials
-          secret:
-            secretName: regcred
+          - name: shared-data
+            persistentVolumeClaim:
+              claimName: lovechedule-pvc2
+          - name: docker-credentials
+            secret:
+              secretName: regcred
         params: # git address
-        - name: repo-url
-          value: $(tt.params.giturl)
-        - name: image-reference
-          value: dktnqls0624/project:$(tt.params.imagetag)
-            #- name: kubectl-args
-            #value:
-            #- "apply"
-            #- "-f"
-            #- "test.yaml"
+          - name: repo-url
+            value: $(tt.params.giturl)
+          - name: image-reference
+            value: dktnqls0624/project:$(tt.params.imagetag)
+          - name: gitRepoUrl
+            value: $(tt.params.gitRepoUrl)
+          - name: gitRevision
+            value: $(tt.params.gitRevision)
+          - name: chartDirectory
+            value: $(tt.params.chartDirectory)
+          - name: chartValuesFile
+            value: $(tt.params.chartValuesFile)

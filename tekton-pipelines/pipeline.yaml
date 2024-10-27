@@ -27,10 +27,6 @@ spec:
         - name: url
           value: $(params.repo-url)
 
-<<<<<<< HEAD
-    - name: build-push
-      runAfter: ["fetch-source"]
-=======
     - name: check-dockerfile
       runAfter: ["fetch-source"]
       taskSpec:
@@ -54,7 +50,6 @@ spec:
 
     - name: build-push
       runAfter: ["check-dockerfile"]
->>>>>>> origin/main
       taskRef:
         name: kaniko
       workspaces:
@@ -65,33 +60,27 @@ spec:
       params:
         - name: IMAGE
           value: $(params.image-reference)
-<<<<<<< HEAD
-
-    - name: deploy
-      runAfter: ["build-push"]
-      taskRef:
-        name: kubernetes-actions
-      workspaces:
-        - name: manifest-dir
-          workspace: shared-data
-      params:
-        - name: args
-          value: $(params.kubectl-args[*])
-=======
         - name: DOCKERFILE
           value: Dockerfile # Dockerfile의 위치를 명확히 지정
         - name: CONTEXT
           value: . # 빌드 컨텍스트 경로
 
-            #   - name: deploy
-            #runAfter: ["build-push"]
-            #taskRef:
-            #name: kubernetes-actions
-            # workspaces:
-            # - name: manifest-dir
-            #workspace: shared-data
-            #params:
-            #- name: args
-            #value: $(params.kubectl-args[*])
+    - name: update-manifest-commit
+      runAfter: ["build-push"]
+      taskRef:
+        name: update-manifest-commit
+      params:
+        - name: gitRepoUrl
+          value: $(params.gitRepoUrl)
+        - name: gitRevision
+          value: $(params.gitRevision)
+        - name: chartDirectory
+          value: $(params.chartDirectory)
+        - name: chartValuesFile
+          value: $(params.chartValuesFile)
+        - name: imageTag
+          value: $(params.image-reference)
+      workspaces:
+        - name: source
+          workspace: shared-data
 
->>>>>>> origin/main
