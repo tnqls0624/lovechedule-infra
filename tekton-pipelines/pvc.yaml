@@ -8,6 +8,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
-  storageClassName: standard # PV와 동일한 스토리지 클래스
-
+      storage: 50Gi
+  storageClassName: lovechedule-ebs-sc

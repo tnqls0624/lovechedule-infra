@@ -8,9 +8,8 @@ spec:
     storage: 10Gi
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: standard
   csi:
     driver: ebs.csi.aws.com
-    volumeHandle: vol-070235316c7a1f8d1

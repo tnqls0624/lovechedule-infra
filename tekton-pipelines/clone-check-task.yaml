@@ -3,22 +3,34 @@ kind: Task
 metadata:
   name: git-clone-and-check
 spec:
+  params:
+    - name: repo-url
+      type: string
+      description: The URL of the Git repository to clone
   workspaces:
     - name: source
   steps:
     - name: fetch-source
       image: alpine/git:latest
+      env:
+        - name: REPO_URL
+          value: "$(params.repo-url)"
+        - name: SOURCE_PATH
+          value: "$(workspaces.source.path)"
       script: |
         set -e
-        git clone $(params.repo-url) $(workspaces.source.path)
+        git clone $REPO_URL $SOURCE_PATH
     - name: check-dockerfile
       image: alpine:latest
+      env:
+        - name: SOURCE_PATH
+          value: "$(workspaces.source.path)"
       script: |
         set -e
         echo "Checking for Dockerfile in workspace..."
-        ls -R $(workspaces.source.path) # 모든 파일 나열
-        if [ -f "$(workspaces.source.path)/Dockerfile" ]; then
-          echo "Dockerfile found at $(workspaces.source.path)/Dockerfile"
+        ls -R $SOURCE_PATH # 모든 파일 나열
+        if [ -f "$SOURCE_PATH/Dockerfile" ]; then
+          echo "Dockerfile found at $SOURCE_PATH/Dockerfile"
         else
           echo "Dockerfile not found in expected location."
           exit 1
