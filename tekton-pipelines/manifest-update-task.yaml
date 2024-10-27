@@ -33,6 +33,12 @@ spec:
         set -e
         set -x
 
+        # Configure HTTPS authentication if available
+        if [ -d /workspace/basic-auth ]; then
+          cp /workspace/basic-auth/.git-credentials /root/.git-credentials
+          cp /workspace/basic-auth/.gitconfig /root/.gitconfig
+        fi
+
         # Clone the repository
         git clone $(params.gitRepoUrl) $(workspaces.source.path)/repo
         cd $(workspaces.source.path)/repo
