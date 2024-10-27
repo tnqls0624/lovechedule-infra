@@ -9,9 +9,18 @@ spec:
       type: string
     - name: image-reference
       type: string
-    - name: kubectl-args
-      type: array
-      default: [ ]
+    - name: gitRepoUrl
+      description: "Git repository URL for the Helm manifest"
+      type: string
+    - name: gitRevision
+      description: "Git branch or tag to commit (e.g. main)"
+      type: string
+    - name: chartDirectory
+      description: "Directory of the Helm chart in the repository"
+      type: string
+    - name: chartValuesFile
+      description: "Values file in the Helm chart to update with the new image tag"
+      type: string
 
   workspaces:
     - name: shared-data
@@ -83,4 +92,3 @@ spec:
       workspaces:
         - name: source
           workspace: shared-data
-
